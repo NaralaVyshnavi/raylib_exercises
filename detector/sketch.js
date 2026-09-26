@@ -1,5 +1,4 @@
 const r = require("raylib");
-const d = require("./geometry")
 
 const screenWidth = 500;
 const screenHeight = 500;
@@ -10,71 +9,94 @@ function setup() {
     r.SetTargetFPS(FPS);
 }
 
-let dx = 0;
-let dy = 0;
-const width = 50;
-const height = screenHeight;
-let color = r.WHITE;
-let start = 0;
-let end = screenWidth
+const dwidth = 50;
+const dheight = screenHeight;
 
-let direction = "Front";
+let d1x = 0;
+let d1y = 0;
+let color1 = r.WHITE;
+let color2 = r.WHITE;
+let d1start = 0;
+let d1end = screenWidth / 2
+const d1speed = 3;
 
-const p1x = 300;
+let d1direction = "Back";
+let d2direction = "Back";
+
+const p1x = 350;
 const p1y = 0;
-const p1width = 100;
+const p1width = 20;
 const p1height = screenHeight;
 
-const p2x = 100;
+const p2x = 250;
 const p2y = 0;
 const p2Width = 20;
 const p2Height = screenHeight;
 
+let d2x = screenWidth / 2;
+let d2y = 0;
+const d2start = screenWidth / 2;
+const d2end = screenWidth
+const d2speed = 2;
 
 
-
-function move(start, end) {
+function changeDirection(direction) {
     if (direction === "Front") {
-        if (dx <= end - width) {
-            dx = dx + 2;
-        }
-        else {
-            direction = "Back";
-        }
+        return "Back";
     }
-    if (direction === "Back") {
-        if (dx >= start) {
-            dx = dx - 2;
-        }
-        else {
-            direction = "Front";
-        }
+    else {
+        return "Front";
+    }
+}
+
+function getDirection(x, start, end, direction, width) {
+    if (x >= end - width || x <= start) {
+        return changeDirection(direction);
+    }
+    return direction
+}
+
+function move(dx, speed, direction) {
+    if (direction === "Front") {
+        return dx + speed;
+    } else {
+        return dx - speed;
     }
 }
 
 function chooseColour(detectorX, particleX, dwidth, pwidth) {
     if (detectorX + dwidth >= particleX && detectorX <= particleX + pwidth) {
-        color = r.RED;
+        return r.RED;
     }
-    if (detectorX > particleX + pwidth || detectorX + dwidth < particleX) {
-        color = r.WHITE;
+    else {
+        return r.WHITE;
     }
 }
 
 function update() {
-    move(start, end);
-    chooseColour(dx, p1x, width, p1width);
-    if (color !== r.RED) {
-        chooseColour(dx, p2x, width, p2Width);
-    }
 
+    d1direction = getDirection(d1x, d1start, d1end, d1direction, dwidth);
+    d2direction = getDirection(d2x, d2start, d2end, d2direction, dwidth);
+
+    d1x = move(d1x, d1speed, d1direction);
+    d2x = move(d2x, d2speed, d2direction);
+
+    color1 = chooseColour(d1x, p1x, dwidth, p1width);
+    if (color1 !== r.RED) {
+        color1 = chooseColour(d1x, p2x, dwidth, p2Width);
+    }
+    color2 = chooseColour(d2x, p2x, dwidth, p2Width);
+    if (color2 !== r.RED) {
+        color2 = chooseColour(d2x, p1x, dwidth, p1width);
+    }
 }
 function draw() {
     r.BeginDrawing();
     r.ClearBackground(r.BLACK)
     r.DrawRectangle(p1x, p1y, p1width, p1height, r.BLUE);
     r.DrawRectangle(p2x, p2y, p2Width, p2Height, r.BLUE);
-    r.DrawRectangle(dx, dy, width, height, color);
+    r.DrawRectangle(d1x, d1y, dwidth, dheight, color1);
+    r.DrawRectangle(d2x, d2y, dwidth, dheight, color2);
     r.EndDrawing();
 }
 
@@ -84,7 +106,6 @@ function running() {
 function teardown() {
     r.CloseWindow();
 }
-
 
 module.exports = {
     setup,
