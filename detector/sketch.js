@@ -63,6 +63,7 @@ function draw() {
     r.BeginDrawing();
     r.ClearBackground(r.BLACK)
     r.DrawRectangle(px, py, pwidth, pheight, r.BLUE);
+    r.DrawRectangle(400, 0, 5, screenWidth, r.BLUE);
     r.DrawRectangle(dx, dy, width, height, color);
     r.EndDrawing();
 }
