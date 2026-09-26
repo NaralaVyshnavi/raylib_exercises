@@ -1,4 +1,5 @@
 const r = require("raylib");
+const d = require("./geometry")
 
 const screenWidth = 500;
 const screenHeight = 500;
@@ -19,10 +20,16 @@ let end = screenWidth
 
 let direction = "Front";
 
-const px = 300;
-const py = 0;
-const pwidth = 100;
-const pheight = screenHeight;
+const p1x = 300;
+const p1y = 0;
+const p1width = 100;
+const p1height = screenHeight;
+
+const p2x = 100;
+const p2y = 0;
+const p2Width = 20;
+const p2Height = screenHeight;
+
 
 
 
@@ -45,25 +52,28 @@ function move(start, end) {
     }
 }
 
-function chooseColour(dx, px) {
-    if (dx + width >= px) {
+function chooseColour(detectorX, particleX, dwidth, pwidth) {
+    if (detectorX + dwidth >= particleX && detectorX <= particleX + pwidth) {
         color = r.RED;
     }
-    if (dx > px + pwidth || dx + width < px) {
+    if (detectorX > particleX + pwidth || detectorX + dwidth < particleX) {
         color = r.WHITE;
     }
 }
 
 function update() {
     move(start, end);
-    chooseColour(dx, px);
-}
+    chooseColour(dx, p1x, width, p1width);
+    if (color !== r.RED) {
+        chooseColour(dx, p2x, width, p2Width);
+    }
 
+}
 function draw() {
     r.BeginDrawing();
     r.ClearBackground(r.BLACK)
-    r.DrawRectangle(px, py, pwidth, pheight, r.BLUE);
-    r.DrawRectangle(400, 0, 5, screenWidth, r.BLUE);
+    r.DrawRectangle(p1x, p1y, p1width, p1height, r.BLUE);
+    r.DrawRectangle(p2x, p2y, p2Width, p2Height, r.BLUE);
     r.DrawRectangle(dx, dy, width, height, color);
     r.EndDrawing();
 }
