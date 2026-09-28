@@ -1,111 +1,148 @@
 const r = require("raylib");
 
-const screenWidth = 800;
-const screenHeight = 800;
-const FPS = 50;
+const d = require("./detector.js");
 
-function setup() {
-    r.InitWindow(screenWidth, screenHeight, "Template");
-    r.SetTargetFPS(FPS);
-}
+const d1 = require("./d1.js");
+const d2 = require("./d2.js");
+const d3 = require("./d3.js");
 
-const detector_width = 50;
-const detector_height = screenHeight;
-
-let detector1_x = 0;
-let detector1_y = 0;
-let detector1_color = r.WHITE;
-let detector1_start = 0;
-let detector1_end = screenWidth / 2
-const detector1_speed = 3;
-let detector1_direction = 0;
-
-let detector2_x = screenWidth / 2;
-let detector2_y = 0;
-const detector2_start = screenWidth / 2;
-const detector2_end = screenWidth
-const detector2_speed = 2;
-let detector2_color = r.WHITE;
-let detector2_direction = 0;
-
-let detector3_x = 0;
-let detector3_y = 0;
-const detector3_start = 0;
-const detector3_end = screenHeight;
-const detector3_width = screenWidth;
-const detector3_height = 50;
-let detector3_speed = 3;
-let detector3_direction = 0;
-let detector3_color = r.WHITE;
-
-const particle1_x = 350;
-const particle1_y = 0;
+const particle1_start = 100;
+const particle1_end = 0;
 const particle1_width = 20;
-const particle1_height = screenHeight;
+let particle1_height;
 
-const particle2_x = 250;
-const particle2_y = 0;
-const particle2_width = 20;
-const particle2_height = screenHeight;
+const particle2_start = 350;
+const particle2_end = 0;
+const particle2_width = 50;
+let particle2_height;
 
-const particle3_x = 0;
-const particle3_y = 300;
-const particle3_width = screenWidth;
-const particle3_height = 50;
+const particle3_start = 0;
+const particle3_end = 300;
+let particle3_width;
+const particle3_height = 100;
 
-function changeDirection(direction) { // '0' means move backward and '1' means move forward
-    return direction === 0 ? 1 : 0;
+function setup(width, height, title) {
+    r.SetTraceLogLevel(r.LOG_NONE);
+    r.InitWindow(width, height, title);
+    r.SetTargetFPS(50);
+
+    d1.upper = height / 2;
+    d1.height = height;
+
+    d2.start = d1.upper;
+    d2.lower = d2.start;
+    d2.upper = height;
+    d2.height = height;
+
+    d3.width = width;
+    d3.upper = height;
+
+    particle1_height = height;
+    particle2_height = height;
+    particle3_width = width;
 }
 
-function getDirection(offset, start, end, direction, dimension) {
-    if (offset >= end - dimension || offset <= start) {
-        return changeDirection(direction);
-    }
-    return direction
+function chooseDetectorColor(start1, width1, start2, width2, start3, width3) {
+    return d.isOverLappingParticles(
+        start1,
+        width1,
+        start2,
+        width2,
+        start3,
+        width3,
+    )
+        ? r.RED
+        : r.WHITE;
 }
 
-function move(offset, speed, direction) {
-    return direction === 1 ? offset + speed : offset - speed;
+function chooseHorizontalDetectorColor(start1, width1, start2, width2) {
+    return d.isOverLapping(start1, width1, start2, width2) ? r.RED : r.WHITE;
 }
-
-function chooseColour(detectorOffset, particleOffset, detector_dimension, particle_dimension) {
-    if (detectorOffset + detector_dimension >= particleOffset && detectorOffset <= particleOffset + particle_dimension) {
-        return r.RED;
-    }
-    else {
-        return r.WHITE;
-    }
-}
-
 function update() {
-    detector1_direction = getDirection(detector1_x, detector1_start, detector1_end, detector1_direction, detector_width);
-    detector2_direction = getDirection(detector2_x, detector2_start, detector2_end, detector2_direction, detector_width);
-    detector3_direction = getDirection(detector3_y, detector3_start, detector3_end, detector3_direction, detector3_height);
+    d1.velocity = d.isDetectorOutOfBounds(
+        d1.start,
+        d1.lower,
+        d1.upper,
+        d1.width,
+        d1.velocity,
+    );
 
-    detector1_x = move(detector1_x, detector1_speed, detector1_direction);
-    detector2_x = move(detector2_x, detector2_speed, detector2_direction);
-    detector3_y = move(detector3_y, detector3_speed, detector3_direction);
+    d1.start = d.calculateDetectorPosition(d1.start, d1.velocity);
 
-    detector1_color = chooseColour(detector1_x, particle1_x, detector_width, particle1_width);
-    if (detector1_color !== r.RED) {
-        detector1_color = chooseColour(detector1_x, particle2_x, detector_width, particle2_width);
-    }
-    detector2_color = chooseColour(detector2_x, particle2_x, detector_width, particle2_width);
-    if (detector2_color !== r.RED) {
-        detector2_color = chooseColour(detector2_x, particle1_x, detector_width, particle1_width);
-    }
-    detector3_color = chooseColour(detector3_y, particle3_y, detector3_height, particle3_height);
+    d1.color = chooseDetectorColor(
+        d1.start,
+        d1.width,
+        particle1_start,
+        particle1_width,
+        particle2_start,
+        particle2_width,
+    );
+
+    d2.velocity = d.isDetectorOutOfBounds(
+        d2.start,
+        d2.lower,
+        d2.upper,
+        d2.width,
+        d2.velocity,
+    );
+
+    d2.start = d.calculateDetectorPosition(d2.start, d2.velocity);
+
+    d2.color = chooseDetectorColor(
+        d2.start,
+        d2.width,
+        particle1_start,
+        particle1_width,
+        particle2_start,
+        particle2_width,
+    );
+
+    d3.velocity = d.isDetectorOutOfBounds(
+        d3.y,
+        d3.lower,
+        d3.upper,
+        d3.height,
+        d3.velocity,
+    );
+
+    d3.y = d.calculateDetectorPosition(d3.y, d3.velocity);
+
+    d3.color = chooseHorizontalDetectorColor(
+        d3.y,
+        d3.height,
+        particle3_end,
+        particle3_height,
+    );
 }
 
 function draw() {
     r.BeginDrawing();
-    r.ClearBackground(r.BLACK)
-    r.DrawRectangle(particle1_x, particle1_y, particle1_width, particle1_height, r.BLUE);
-    r.DrawRectangle(particle2_x, particle2_y, particle2_width, particle2_height, r.BLUE);
-    r.DrawRectangle(particle3_x, particle3_y, particle3_width, particle3_height, r.BLUE);
-    r.DrawRectangle(detector3_x, detector3_y, detector3_width, detector3_height, detector3_color);
-    r.DrawRectangle(detector1_x, detector1_y, detector_width, detector_height, detector1_color);
-    r.DrawRectangle(detector2_x, detector2_y, detector_width, detector_height, detector2_color);
+    r.ClearBackground(r.BLACK);
+    r.DrawRectangle(
+        particle1_start,
+        particle1_end,
+        particle1_width,
+        particle1_height,
+        r.BLUE,
+    );
+    r.DrawRectangle(
+        particle2_start,
+        particle2_end,
+        particle2_width,
+        particle2_height,
+        r.BLUE,
+    );
+    r.DrawRectangle(
+        particle3_start,
+        particle3_end,
+        particle3_width,
+        particle3_height,
+        r.BLUE,
+    );
+
+    r.DrawRectangle(d3.start, d3.y, d3.width, d3.height, d3.color);
+    r.DrawRectangle(d2.start, d2.y, d2.width, d2.height, d2.color);
+    r.DrawRectangle(d1.start, d1.y, d1.width, d1.height, d1.color);
     r.EndDrawing();
 }
 
@@ -122,5 +159,5 @@ module.exports = {
     update,
     draw,
     running,
-    teardown
+    teardown,
 };
