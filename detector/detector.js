@@ -1,12 +1,40 @@
-function isDetectorOutOfBounds(start, lower, upper, width, velocity) {
-    let end = start + width;
-    return end > upper || start < lower ? -velocity : velocity;
+const r = require("raylib");
+
+function createDetector(start, width, height, lower, upper, velocity) {
+    let color = r.WHITE;
+    return {
+        start,
+        width,
+        height,
+        lower,
+        upper,
+        velocity,
+        color,
+    };
 }
 
-function calculateDetectorPosition(start, velocity) {
-    return start + velocity;
+function isVerticleDetectorOutOfBounds(detector) {
+    let detecor_end = detector.start + detector.width;
+    return detecor_end > detector.upper || detector.start < detector.lower
+        ? -detector.velocity
+        : detector.velocity;
+}
+function isHorizontalDetectorOutOfBounds(detector) {
+    let detecor_end = detector.start + detector.height;
+    return detecor_end > detector.upper || detector.start < detector.lower
+        ? -detector.velocity
+        : detector.velocity;
 }
 
+function calculateDetectorPosition(detector) {
+    return detector.start + detector.velocity;
+}
+
+// function isOverLapping(detector, particle) {
+//     let detectorEnd = detector.start + detector.width;
+//     let particleEnd = partcleStart + particleWidth;
+//     return !(detectorStart > particleEnd || detectorEnd < partcleStart);
+// }
 function isOverLapping(
     detectorStart,
     detectorWidth,
@@ -32,8 +60,32 @@ function isOverLappingParticles(
     );
 }
 
+function drawVerticleDetector(detector) {
+    r.DrawRectangle(
+        detector.start,
+        0,
+        detector.width,
+        detector.height,
+        detector.color,
+    );
+}
+
+function drawHorizontalDetector(detector) {
+    r.DrawRectangle(
+        0,
+        detector.start,
+        detector.width,
+        detector.height,
+        detector.color,
+    );
+}
+
 module.exports = {
-    isDetectorOutOfBounds,
+    createDetector,
+    drawHorizontalDetector,
+    drawVerticleDetector,
+    isVerticleDetectorOutOfBounds,
+    isHorizontalDetectorOutOfBounds,
     calculateDetectorPosition,
     isOverLapping,
     isOverLappingParticles,
