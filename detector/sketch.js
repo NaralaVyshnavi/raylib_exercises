@@ -58,12 +58,12 @@ function update() {
 
     d3.velocity = d.isHorizontalDetectorOutOfBounds(d3);
     d3.start = d.calculateDetectorPosition(d3);
-    d3.color = chooseHorizontalDetectorColor(
-        d3.start,
-        d3.height,
-        p3.start,
-        p3.height,
-    );
+    // d3.color = chooseHorizontalDetectorColor(
+    //     d3.start,
+    //     d3.height,
+    //     p3.start,
+    //     p3.height,
+    // );
 }
 
 function draw() {
