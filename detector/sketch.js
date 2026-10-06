@@ -3,39 +3,54 @@ const d = require("./detector.js");
 const p = require("./particle.js");
 const range = require("./draw.js");
 
-function setup(width, height, title) {
+function setup(world) {
     r.SetTraceLogLevel(r.LOG_NONE);
-    r.InitWindow(width, height, title);
+    r.InitWindow(world.WIDTH, world.HEIGHT, world.TITLE);
     r.SetTargetFPS(50);
+    world.d1 = d.createDetector(
+        0,
+        50,
+        world.HEIGHT,
+        0,
+        world.WIDTH / 2,
+        2,
+        "coloumn",
+    );
+    world.d2 = d.createDetector(
+        world.WIDTH / 2,
+        50,
+        world.HEIGHT,
+        world.WIDTH / 2,
+        world.WIDTH,
+        4,
+        "column",
+    );
+    world.d3 = d.createDetector(0, world.WIDTH, 50, 0, world.HEIGHT, 4, "row");
 
-    d1 = d.createDetector(0, 50, height, 0, width / 2, 2, "coloumn");
-    d2 = d.createDetector(width / 2, 50, height, width / 2, width, 4, "column");
-    d3 = d.createDetector(0, width, 50, 0, height, 4, "row");
-
-    p1 = p.createParticle(100, 50, height, "column");
-    p2 = p.createParticle(250, 70, height, "column");
-    p3 = p.createParticle(300, width, 20, "row");
-    p4 = p.createParticle(100, width, 50, "row");
+    world.p1 = p.createParticle(100, 50, world.HEIGHT, "column");
+    world.p2 = p.createParticle(250, 70, world.HEIGHT, "column");
+    world.p3 = p.createParticle(300, world.WIDTH, 20, "row");
+    world.p4 = p.createParticle(100, world.WIDTH, 50, "row");
 }
 
-function update() {
-    d1 = d.updateDetector(d1, p1, p2);
-    d2 = d.updateDetector(d2, p1, p2);
-    d3 = d.updateDetector(d3, p3, p4);
+function update(world) {
+    world.d1 = d.updateDetector(world.d1, world.p1, world.p2);
+    world.d2 = d.updateDetector(world.d2, world.p1, world.p2);
+    world.d3 = d.updateDetector(world.d3, world.p3, world.p4);
 }
 
-function draw() {
+function draw(world) {
     r.BeginDrawing();
     r.ClearBackground(r.BLACK);
 
-    range.draw(p1);
-    range.draw(p2);
-    range.draw(p3);
-    range.draw(p4);
+    range.draw(world.p1);
+    range.draw(world.p2);
+    range.draw(world.p3);
+    range.draw(world.p4);
 
-    range.draw(d3);
-    range.draw(d2);
-    range.draw(d1);
+    range.draw(world.d3);
+    range.draw(world.d2);
+    range.draw(world.d1);
 
     r.EndDrawing();
 }

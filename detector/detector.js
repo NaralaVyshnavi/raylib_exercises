@@ -1,7 +1,6 @@
 const r = require("raylib");
 
 function createDetector(start, width, height, lower, upper, velocity, matrix) {
-    let color = r.WHITE;
     return {
         start,
         width,
@@ -10,7 +9,7 @@ function createDetector(start, width, height, lower, upper, velocity, matrix) {
         upper,
         velocity,
         matrix,
-        color,
+        color: r.WHITE,
     };
 }
 

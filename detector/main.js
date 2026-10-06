@@ -1,17 +1,20 @@
 const sketch = require("./sketch");
 
-function loop() {
+function loop(world) {
     while (sketch.running()) {
-        sketch.update();
-        sketch.draw();
+        sketch.update(world);
+        sketch.draw(world);
     }
 }
-const WIDTH = 600;
-const HEIGHT = 600;
-const TITLE = "A Partical Detector";
+const world = {
+    WIDTH: 600,
+    HEIGHT: 600,
+    TITLE: "A Partical Detector",
+};
+
 function main() {
-    sketch.setup(WIDTH, HEIGHT, TITLE);
-    loop();
+    sketch.setup(world);
+    loop(world);
     sketch.teardown();
 }
 
