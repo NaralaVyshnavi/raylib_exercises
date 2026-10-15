@@ -16,11 +16,11 @@ function setUp() {
 }
 
 function calculateTargetOne() {
-    return (((targetOneX - sourceX) ** 2) + ((targetOneY - sourceY) ** 2)) ** 0.5
+    return ((targetOneX - sourceX) ** 2 + (targetOneY - sourceY) ** 2) ** 0.5;
 }
 
 function calculateTargetTwo() {
-    return (((targetTwoX - sourceX) ** 2) + ((targetTwoY - sourceY) ** 2)) ** 0.5
+    return ((targetTwoX - sourceX) ** 2 + (targetTwoY - sourceY) ** 2) ** 0.5;
 }
 function draw() {
     r.BeginDrawing();
@@ -31,12 +31,10 @@ function draw() {
 
     if (calculateTargetOne() < calculateTargetTwo()) {
         r.DrawLine(sourceX, sourceY, targetOneX, targetOneY, r.BLACK);
-    }
-    else if (calculateTargetOne() == calculateTargetTwo()) {
+    } else if (calculateTargetOne() == calculateTargetTwo()) {
         r.DrawLine(sourceX, sourceY, targetOneX, targetOneY, r.BLACK);
         r.DrawLine(sourceX, sourceY, targetTwoX, targetTwoY, r.BLACK);
-    }
-    else {
+    } else {
         r.DrawLine(sourceX, sourceY, targetTwoX, targetTwoY, r.BLACK);
     }
     r.EndDrawing();
@@ -53,4 +51,3 @@ function main() {
     r.CloseWindow();
 }
 main();
-
