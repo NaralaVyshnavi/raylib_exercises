@@ -1,0 +1,46 @@
+Here are the list of concepts I am not good at and wish to learn and know 
+->How to use maths trignometry and geormentry other concepts in programming .I am not able think in terms of maths when coding and trying to think logic of the problem
+->I also don’t know how to use physics concepts in programming 
+-> I want to learn more randomness and random distribution in programming 
+->I want to get good at typing 
+—>I want to learn about Lsystems and want to build cool program ex Drangon curve using Systems
+->I want to experiment and build cool things with recursion ex diving a square upto n numbers 
+->I want to get good at speaking English 
+->I think I don’t know many English terms that we use in corporate world
+->I am not good at naming things 
+->I don’t know how to control my mind when I am stress .whenever they give us assignment and I am not getting any idea and my peers got it easily I feel tense and I can’t even think in that state how do keep my mind calm and tense free
+->how to stop overthinking
+->how to stay to calm whenever there is a challenge infant of me
+->How can I get curious about something
+->I want to solve ew problems everyday to improve my programming and by the break ends I should be able to apply maths concepts or physics concepts I programming easily
+->I don’t know how to break down a bigger problem to smaller one
+->testing functions before implementing 
+->debugging when there is a bug
+->organising code
+->verification of code
+->trying different appraoach
+->how to solve an unfamiliar problem 
+->I want to learn about texture and build cool things 
+->I want to speak English fluently
+->I want to know how to move a triangle between points
+->use tools like ankidriod ,obsidian or other etc
+
+
+Technical Concepts:
+Maths trignometry 
+Physics concepts
+Randomness and random distribution
+Textures in ray lib
+Typing
+Lsystems
+Recursion How can use use recursion to build cool things ,and uses of recursion in real time
+Breaing down the problem into smaller version
+Maintaining a todo list
+Making a checklist to organise the code 
+What to do before getting into code
+How to get a better approach
+Debugging
+How do I spend my weekend so that I can be more productive
+How to explain my approach Cleary to other person
+English grammer
+English speaking skills
