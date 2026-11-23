@@ -15,7 +15,7 @@ while (!r.WindowShouldClose()) {
     r.BeginDrawing();
     r.ClearBackground(r.BLACK);
     r.DrawRectangle(x, y, 100, 100, r.RED);
-    r.DrawLine(windowWidth / 2, 0, windowWidth / 4, windowHeight, r.WHITE);
+    r.DrawLine(windowWidth / 2, 0, windowWidth / 2, windowHeight, r.WHITE);
     r.EndDrawing();
 }
 
